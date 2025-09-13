@@ -116,6 +116,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
     }
 
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     applicationVariants.configureEach {
         if (buildType.name == "debug" && flavorName == "emulator") {
             resValue("string", "app_name", "JL-Debug")
