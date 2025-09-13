@@ -36,14 +36,18 @@ android {
 
     signingConfigs {
         create("emulator") {
-            rootProject.file("keystore.properties").takeIf(File::isFile)?.inputStream().use {
-                val keystoreProperties = Properties()
-                keystoreProperties.load(it)
-                keyAlias = keystoreProperties["keyAlias"] as String
-                keyPassword = keystoreProperties["keyPassword"] as String
-                storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
-                storePassword = keystoreProperties["storePassword"] as String
+            val keystoreFile = rootProject.file("keystore.properties")
+            if (keystoreFile.exists()) {
+                keystoreFile.inputStream().use {
+                    val keystoreProperties = Properties()
+                    keystoreProperties.load(it)
+                    keyAlias = keystoreProperties["keyAlias"] as String
+                    keyPassword = keystoreProperties["keyPassword"] as String
+                    storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
+                    storePassword = keystoreProperties["storePassword"] as String
+                }
             }
+            // If keystore.properties doesn't exist, signing config will use debug signing
         }
     }
 
